@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block stylesheets %}
@@ -58,37 +60,46 @@
             margin-top: 0;
             margin-bottom: 10px;
         }
+
+        .form-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
 
-    <div class="news-list-container">
-        <div class="news-container">
-            <div class="karma">
-                <div class="karma-count">17</div>
-                <div class="karma-buttons">
-                    <div class="karma-btn upvote-btn">
-                        <i class="las la-chevron-up"></i>
-                    </div>
-                    <div class="karma-btn downvote-btn">
-                        <i class="las la-chevron-down"></i>
+    <div class="form-container">
+        {{ form(form) }}
+    </div>
+    {% for link in links|reverse %}
+        <div class="news-list-container">
+            <div class="news-container">
+                <div class="karma">
+                    <div class="karma-count">{{ link.reactions|length }}</div>
+                    <div class="karma-buttons">
+                        <div class="karma-btn upvote-btn">
+                            <i class="las la-chevron-up"></i>
+                        </div>
+                        <div class="karma-btn downvote-btn">
+                            <i class="las la-chevron-down"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="news-infos">
-                <h2 class="news-title">Some exciting news</h2>
+                <div class="news-infos">
+                    <h2 class="news-title">{{ link.title }}</h2>
                     <p class="news-link-container">
-                        <a href="http://ter.re/" target="_blank" class="news-link">http://ter.re/</a>
+                        <a href="{{ link.url }}" target="_blank" class="news-link">{{ link.url }}</a>
                     </p>
-                <div class="news-meta">
-                    <div class="news-author">by God</div>
-                    <div>2023-01-21</div>
+                    <div class="news-meta">
+                        <div class="news-author">by God</div>
+                        <div>{{ link.createdAt|date('Y-m-d') }}</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    {% for link in links %}
-        {{ dump(link) }}
     {% endfor %}
 {% endblock %}
